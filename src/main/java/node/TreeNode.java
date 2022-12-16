@@ -2,6 +2,7 @@ package node;
 
 public class TreeNode {
     public int val;
+    public  int height;
     public TreeNode left;
     public TreeNode right;
     public TreeNode() {}
