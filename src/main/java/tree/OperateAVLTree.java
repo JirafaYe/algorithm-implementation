@@ -122,8 +122,10 @@ public class OperateAVLTree {
                     cur = cur.left;
                 }
                 successor.val  = cur.val;
-                successor.right = remove(cur.right,value);
+                successor.right = remove(node.right,cur.val);
                 successor.left = node.left;
+//                node.left = null;
+//                node.right = null;
                 retNode = successor;
             }
             if(retNode == null)
