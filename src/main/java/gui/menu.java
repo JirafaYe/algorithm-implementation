@@ -6,7 +6,6 @@ import tree.OperateBST;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 
 
 public class menu {
@@ -47,38 +46,83 @@ public class menu {
 
             next1.addActionListener(b -> {
                 TreePanel treePanel;
+                TreeNode root;
                 if(bst.isSelected()){
                     OperateBST operateBST = new OperateBST();
                     String[] split = instTxt.getText().split(",");
-                    TreeNode root = new TreeNode(Integer.parseInt(split[0]));
+                    root = new TreeNode(Integer.parseInt(split[0]));
                     for (int i = 1; i < split.length; i++) {
                         operateBST.add(root,Integer.parseInt(split[i]));
                     }
                     DrawTree drawTree = new DrawTree();
                     drawTree.getNodeList(root, 0, 0);
                     treePanel = new TreePanel(drawTree.getNodeList());
-
                 }else{
                     OperateAVLTree operateAVLTree = new OperateAVLTree();
                     String[] split = instTxt.getText().split(",");
-                    TreeNode root = new TreeNode(Integer.parseInt(split[0]));
+                    root = new TreeNode(Integer.parseInt(split[0]));
                     for (int i = 1; i < split.length; i++) {
-                        operateAVLTree.add(root,Integer.parseInt(split[i]));
+                        root=operateAVLTree.add(root,Integer.parseInt(split[i]));
                     }
                     DrawTree drawTree = new DrawTree();
                     drawTree.getNodeList(root, 0, 0);
                     treePanel = new TreePanel(drawTree.getNodeList());
                 }
-                JLabel delete = new JLabel("删除");
-                JTextField del = new JTextField("",20);
-
-                JButton confirm = new JButton("确定");
                 JFrame tree = new JFrame();
                 tree.add(treePanel);
                 tree.setSize(700,700);
                 tree.setLocation(400,300);
                 tree.setVisible(true);
                 tree.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+                JLabel delete = new JLabel("删除");
+                JTextField del = new JTextField("",20);
+                JLabel add = new JLabel("插入");
+                JTextField addText = new JTextField("",20);
+                JButton confirm = new JButton("确定");
+                TreeNode finalRoot = root;
+                confirm.addActionListener(e2->{
+                    OperateBST operateBST = new OperateBST();
+                    OperateAVLTree operateAVLTree = new OperateAVLTree();
+                    TreeNode tmp = finalRoot;
+                    if(bst.isSelected()) {
+                        if (!del.getText().isEmpty()) {
+                            tmp = operateBST.delete(tmp, Integer.parseInt(del.getText()));
+                        } else {
+                            operateBST.add(tmp, Integer.parseInt(addText.getText()));
+                        }
+                    }else {
+                        if (!del.getText().isEmpty()) {
+                            tmp = operateAVLTree.remove(tmp, Integer.parseInt(del.getText()));
+                        } else {
+                            tmp=operateAVLTree.add(tmp, Integer.parseInt(addText.getText()));
+                        }
+                    }
+
+                    DrawTree drawTree = new DrawTree();
+                    drawTree.getNodeList(tmp, 0, 0);
+                    TreePanel panel = new TreePanel(drawTree.getNodeList());
+                    JFrame refresh = new JFrame();
+                    refresh.add(panel);
+                    refresh.setSize(700,700);
+                    refresh.setLocation(400,300);
+                    refresh.setVisible(true);
+                    refresh.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                });
+
+                JFrame operate = new JFrame();
+                operate.add(delete);
+                operate.add(del);
+                operate.add(add);
+                operate.add(addText);
+                operate.add(confirm);
+                operate.setLayout(new FlowLayout(FlowLayout.LEFT));
+                operate.setSize(300,300);
+                operate.setLocation(400,300);
+                operate.setVisible(true);
+                operate.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+
             });
         });
 
